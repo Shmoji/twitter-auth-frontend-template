@@ -1,11 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { Router, useRouter } from 'next/dist/client/router'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { MenuIcon, XCircleIcon } from '@heroicons/react/solid'
 import NProgress from 'nprogress'
 import A from './A'
-import ModalService from 'components/modals/ModalService'
 import classNames from 'classnames'
+import { twitterLogin } from 'modules/users/services/UserService'
+import { GlobalContext } from 'lib/GlobalContext'
+import AuthStatusWithConnectButton from 'modules/users/components/AuthStatusWithConnectButton'
 
 type MenuItemType = {
   name: string,
@@ -19,6 +21,8 @@ export default function Header() {
   const router = useRouter()
   const closeMenu = () => setIsMobileNavOpen(false)
   const menuItems: MenuItemType[] = []
+
+  const { user } = useContext(GlobalContext)
 
   useEffect(() => {
     NProgress.configure({ trickleSpeed: 100 })
@@ -71,9 +75,7 @@ export default function Header() {
               ))}
             </div>
 
-            {/* <div className="z-20 hidden md:ml-6 md:flex md:items-center">
-              <WalletStatus openModal={() => ModalService.open(WalletModal)} />
-            </div> */}
+            <AuthStatusWithConnectButton />
 
             <div className="flex items-center -mr-2 md:hidden">
               <button
@@ -124,9 +126,7 @@ export default function Header() {
               </A>
             ))}
 
-            {/* <div className="flex justify-center mt-5">
-              <WalletStatus openModal={() => ModalService.open(WalletModal)} />
-            </div> */}
+            
           </div>
         </div>
       </nav>
